@@ -291,9 +291,10 @@ address and `/api/voice/ask` can forward text to a Home Assistant webhook or any
 
 ## Debloat
 
-About a minute after every boot, the debloat stops `remotelogger`, `service-logger`, `contentminer` and `nudge`,
-prevents `acr2`, `admanager`, `sportsalarm` and `adoverlay-service` from starting, and adds `eic.ads.lgtvcommon.com`,
-`nl.ad.lgsmartad.com` and `nl.info.lgsmartad.com` to `/etc/hosts` (marked `# cleanyourtv-debloat`; other entries are
+About a minute after every boot, the debloat stops `remotelogger`, `service-logger`, `contentminer`, `nudge`, `rdxd`
+and `uploadd` (LG's diagnostics and log upload), prevents `acr2`, `admanager`, `sportsalarm` and `adoverlay-service`
+from starting, and adds `eic.ads.lgtvcommon.com`, `nl.ad.lgsmartad.com`, `nl.info.lgsmartad.com` and
+`rdl.lgtvcommon.com` (the log upload server) to `/etc/hosts` (marked `# cleanyourtv-debloat`; other entries are
 untouched). Nothing is uninstalled. It applies only while the launcher is Home. Turn it off with the switch in the
 manager app.
 
