@@ -61,7 +61,8 @@ function launch(id,params){
   x.onload=function(){log('launch reply '+x.responseText.slice(0,120))};
   x.onerror=x.ontimeout=function(){log('helper did not answer; trying the system');call('luna://com.webos.applicationManager/launch',{id:id,params:params||{}})};
   x.send(JSON.stringify({id:id,params:params||{}}))}
-function hide(){log('hide');shown=false;document.body.classList.remove('on');try{webOSSystem.hide()}catch(e){}}
+function focusable(on){try{webOSSystem.setWindowProperty('needFocus',on?'true':'false')}catch(e){}}
+function hide(){log('hide');shown=false;document.body.classList.remove('on');focusable(false);try{webOSSystem.hide()}catch(e){}}
 function cur(){return row===0?apps:inputs}
 function persist(){try{localStorage.setItem(KEY,JSON.stringify(cache))}catch(e){}}
 
@@ -124,6 +125,7 @@ function load(){   // the last known layout, ready before the first open
   setData(cache.inputs.length?cache:{apps:[],inputs:buildInputs([])},true)}
 function show(){
   shown=true;moved=false;shownAt=Date.now();log('show');
+  focusable(true);
   setData({apps:apps,inputs:inputs},true);   // focus back on the active input
   document.body.classList.add('on');
   requestAnimationFrame(function(){log('painted')});
@@ -149,6 +151,7 @@ document.addEventListener('webOSRelaunch',function(){
   if(params().prewarm)return;
   if(shown){if(Date.now()-shownAt>700)hide()}   // Input pressed again closes it
   else show()});
+if(params().prewarm)focusable(false);
 load();
 if(params().prewarm){
   refresh();   // built and filled while hidden
